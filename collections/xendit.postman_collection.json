@@ -1,0 +1,259 @@
+{
+  "info": {
+    "name": "Xendit API",
+    "description": "A representative subset of the Xendit payments API for Southeast Asia. Base URL: https://api.xendit.co. Authenticate with your secret API key over HTTP Basic (key as username, empty password). The v3 Payments API (payment_requests, payment_tokens) requires the api-version header 2024-11-11. Grounded in https://docs.xendit.co.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{secretApiKey}}", "type": "string" },
+      { "key": "password", "value": "", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.xendit.co", "type": "string" },
+    { "key": "secretApiKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Payment Requests",
+      "item": [
+        {
+          "name": "Create a payment request",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "api-version", "value": "2024-11-11" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"reference_id\": \"order-123\",\n  \"currency\": \"IDR\",\n  \"amount\": 15000,\n  \"country\": \"ID\",\n  \"payment_method\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/v3/payment_requests", "host": ["{{baseUrl}}"], "path": ["v3", "payment_requests"] },
+            "description": "Charges an end user through a chosen channel."
+          }
+        },
+        {
+          "name": "Get a payment request",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "api-version", "value": "2024-11-11" } ],
+            "url": { "raw": "{{baseUrl}}/v3/payment_requests/:payment_request_id", "host": ["{{baseUrl}}"], "path": ["v3", "payment_requests", ":payment_request_id"], "variable": [{ "key": "payment_request_id", "value": "" }] },
+            "description": "Retrieves the status of a payment request by ID."
+          }
+        },
+        {
+          "name": "Cancel a payment request",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "api-version", "value": "2024-11-11" } ],
+            "url": { "raw": "{{baseUrl}}/v3/payment_requests/:payment_request_id/cancel", "host": ["{{baseUrl}}"], "path": ["v3", "payment_requests", ":payment_request_id", "cancel"], "variable": [{ "key": "payment_request_id", "value": "" }] },
+            "description": "Cancels a payment request."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Tokens",
+      "item": [
+        {
+          "name": "Create a payment token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "api-version", "value": "2024-11-11" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"reference_id\": \"cust-token-1\",\n  \"country\": \"ID\",\n  \"currency\": \"IDR\",\n  \"channel_code\": \"DANA\",\n  \"channel_properties\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/v3/payment_tokens", "host": ["{{baseUrl}}"], "path": ["v3", "payment_tokens"] },
+            "description": "Saves a reusable payment method for future transactions."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "Create an invoice",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"external_id\": \"invoice-001\",\n  \"amount\": 100000,\n  \"payer_email\": \"customer@example.com\",\n  \"description\": \"Test invoice\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v2/invoices", "host": ["{{baseUrl}}"], "path": ["v2", "invoices"] },
+            "description": "Creates a Xendit-hosted invoice / payment link."
+          }
+        },
+        {
+          "name": "List invoices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v2/invoices?limit=10", "host": ["{{baseUrl}}"], "path": ["v2", "invoices"], "query": [{ "key": "limit", "value": "10" }] },
+            "description": "Lists invoices. (Modeled representative.)"
+          }
+        },
+        {
+          "name": "Get an invoice",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v2/invoices/:invoice_id", "host": ["{{baseUrl}}"], "path": ["v2", "invoices", ":invoice_id"], "variable": [{ "key": "invoice_id", "value": "" }] },
+            "description": "Retrieves an invoice by ID. (Modeled representative.)"
+          }
+        },
+        {
+          "name": "Expire an invoice",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/invoices/:invoice_id/expire!", "host": ["{{baseUrl}}"], "path": ["invoices", ":invoice_id", "expire!"], "variable": [{ "key": "invoice_id", "value": "" }] },
+            "description": "Manually expires an outstanding invoice. (Modeled representative.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payouts",
+      "item": [
+        {
+          "name": "Create a payout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Idempotency-key", "value": "unique-key-123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"reference_id\": \"payout-001\",\n  \"channel_code\": \"ID_BCA\",\n  \"channel_properties\": {},\n  \"amount\": 50000,\n  \"currency\": \"IDR\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v3/payouts", "host": ["{{baseUrl}}"], "path": ["v3", "payouts"] },
+            "description": "Disburses funds to a bank account or e-wallet."
+          }
+        },
+        {
+          "name": "Get a payout",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v3/payouts/:payout_id", "host": ["{{baseUrl}}"], "path": ["v3", "payouts", ":payout_id"], "variable": [{ "key": "payout_id", "value": "" }] },
+            "description": "Retrieves a payout by ID."
+          }
+        },
+        {
+          "name": "Cancel a payout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v3/payouts/:payout_id/cancel", "host": ["{{baseUrl}}"], "path": ["v3", "payouts", ":payout_id", "cancel"], "variable": [{ "key": "payout_id", "value": "" }] },
+            "description": "Cancels a payout not yet disbursed. (Modeled representative.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Balance",
+      "item": [
+        {
+          "name": "Get balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/balance?account_type=CASH&currency=IDR", "host": ["{{baseUrl}}"], "path": ["balance"], "query": [{ "key": "account_type", "value": "CASH" }, { "key": "currency", "value": "IDR" }] },
+            "description": "Retrieves the account balance for an account type and currency."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "List transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/transactions?limit=10", "host": ["{{baseUrl}}"], "path": ["transactions"], "query": [{ "key": "limit", "value": "10" }] },
+            "description": "Lists money-movement transactions with filters and cursor pagination."
+          }
+        },
+        {
+          "name": "Get a transaction",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/transactions/:transaction_id", "host": ["{{baseUrl}}"], "path": ["transactions", ":transaction_id"], "variable": [{ "key": "transaction_id", "value": "" }] },
+            "description": "Retrieves a single transaction by ID. (Modeled representative.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create a customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "api-version", "value": "2020-10-31" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"reference_id\": \"cust-001\",\n  \"type\": \"INDIVIDUAL\",\n  \"individual_detail\": { \"given_names\": \"Jane\", \"surname\": \"Doe\" }\n}" },
+            "url": { "raw": "{{baseUrl}}/customers", "host": ["{{baseUrl}}"], "path": ["customers"] },
+            "description": "Creates a customer record for later use with a payments endpoint."
+          }
+        },
+        {
+          "name": "List customers",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "api-version", "value": "2020-10-31" } ],
+            "url": { "raw": "{{baseUrl}}/customers?reference_id=cust-001", "host": ["{{baseUrl}}"], "path": ["customers"], "query": [{ "key": "reference_id", "value": "cust-001" }] },
+            "description": "Retrieves customers matching the given reference_id."
+          }
+        },
+        {
+          "name": "Get a customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/customers/:customer_id", "host": ["{{baseUrl}}"], "path": ["customers", ":customer_id"], "variable": [{ "key": "customer_id", "value": "" }] },
+            "description": "Retrieves a customer by ID. (Modeled representative.)"
+          }
+        },
+        {
+          "name": "Update a customer",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/customers/:customer_id", "host": ["{{baseUrl}}"], "path": ["customers", ":customer_id"], "variable": [{ "key": "customer_id", "value": "" }] },
+            "description": "Updates a customer record. (Modeled representative.)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Refunds",
+      "item": [
+        {
+          "name": "Create a refund",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"payment_request_id\": \"pr-xxxxxxxx\",\n  \"reason\": \"REQUESTED_BY_CUSTOMER\",\n  \"amount\": 15000\n}" },
+            "url": { "raw": "{{baseUrl}}/refunds", "host": ["{{baseUrl}}"], "path": ["refunds"] },
+            "description": "Initiates a full or partial refund for a successful payment request."
+          }
+        },
+        {
+          "name": "Get a refund",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/refunds/:refund_id", "host": ["{{baseUrl}}"], "path": ["refunds", ":refund_id"], "variable": [{ "key": "refund_id", "value": "" }] },
+            "description": "Retrieves a refund by ID. (Modeled representative.)"
+          }
+        }
+      ]
+    }
+  ]
+}

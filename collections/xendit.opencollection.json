@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{secretApiKey}}",
+      "password": ""
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Payment Requests", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a payment request.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payment_requests",
+            "headers": [
+              { "name": "api-version", "value": "2024-11-11" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{\n  \"reference_id\": \"order-123\",\n  \"currency\": \"IDR\",\n  \"amount\": 15000,\n  \"country\": \"ID\",\n  \"payment_method\": {}\n}" }
+          },
+          "docs": "Charges an end user through a chosen channel (VA, e-wallet, QR, card, direct debit, retail outlet)."
+        },
+        {
+          "info": { "name": "Get a payment request.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v3/payment_requests/:payment_request_id",
+            "headers": [ { "name": "api-version", "value": "2024-11-11" } ],
+            "params": [ { "name": "payment_request_id", "value": "", "type": "path", "description": "The 39-character payment request ID." } ]
+          },
+          "docs": "Retrieves the status of a payment request by ID."
+        },
+        {
+          "info": { "name": "Cancel a payment request.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payment_requests/:payment_request_id/cancel",
+            "headers": [ { "name": "api-version", "value": "2024-11-11" } ],
+            "params": [ { "name": "payment_request_id", "value": "", "type": "path", "description": "The 39-character payment request ID." } ]
+          },
+          "docs": "Cancels a payment request, preventing the end user from completing payment."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payment Tokens", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a payment token.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payment_tokens",
+            "headers": [
+              { "name": "api-version", "value": "2024-11-11" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{\n  \"reference_id\": \"cust-token-1\",\n  \"country\": \"ID\",\n  \"currency\": \"IDR\",\n  \"channel_code\": \"DANA\",\n  \"channel_properties\": {}\n}" }
+          },
+          "docs": "Saves an end user's payment method as a reusable payment token for future transactions."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Invoices", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create an invoice.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v2/invoices",
+            "headers": [ { "name": "Content-Type", "value": "application/json" } ],
+            "body": { "type": "json", "data": "{\n  \"external_id\": \"invoice-001\",\n  \"amount\": 100000,\n  \"payer_email\": \"customer@example.com\",\n  \"description\": \"Test invoice\"\n}" }
+          },
+          "docs": "Creates a Xendit-hosted invoice / payment link presenting all enabled channels."
+        },
+        {
+          "info": { "name": "List invoices.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v2/invoices?limit=10",
+            "params": [ { "name": "limit", "value": "10", "type": "query", "description": "Results per page." } ]
+          },
+          "docs": "Lists invoices, filterable by external_id and status. (Modeled representative.)"
+        },
+        {
+          "info": { "name": "Get an invoice.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v2/invoices/:invoice_id",
+            "params": [ { "name": "invoice_id", "value": "", "type": "path", "description": "The Xendit invoice ID." } ]
+          },
+          "docs": "Retrieves an invoice by ID. (Modeled representative.)"
+        },
+        {
+          "info": { "name": "Expire an invoice.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/invoices/:invoice_id/expire!",
+            "params": [ { "name": "invoice_id", "value": "", "type": "path", "description": "The Xendit invoice ID." } ]
+          },
+          "docs": "Manually expires an outstanding invoice. (Modeled representative.)"
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payouts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a payout.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payouts",
+            "headers": [
+              { "name": "Idempotency-key", "value": "unique-key-123" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{\n  \"reference_id\": \"payout-001\",\n  \"channel_code\": \"ID_BCA\",\n  \"channel_properties\": {},\n  \"amount\": 50000,\n  \"currency\": \"IDR\"\n}" }
+          },
+          "docs": "Disburses funds to a bank account or e-wallet."
+        },
+        {
+          "info": { "name": "Get a payout.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v3/payouts/:payout_id",
+            "params": [ { "name": "payout_id", "value": "", "type": "path", "description": "The payout ID." } ]
+          },
+          "docs": "Retrieves a payout by ID."
+        },
+        {
+          "info": { "name": "Cancel a payout.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payouts/:payout_id/cancel",
+            "params": [ { "name": "payout_id", "value": "", "type": "path", "description": "The payout ID." } ]
+          },
+          "docs": "Cancels a payout not yet disbursed. (Modeled representative.)"
+        }
+      ]
+    },
+    {
+      "info": { "name": "Balance", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get balance.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/balance?account_type=CASH&currency=IDR",
+            "params": [
+              { "name": "account_type", "value": "CASH", "type": "query", "description": "CASH or HOLDING." },
+              { "name": "currency", "value": "IDR", "type": "query", "description": "ISO 4217 currency code." }
+            ]
+          },
+          "docs": "Retrieves the account balance for an account type and currency."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Transactions", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List transactions.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/transactions?limit=10",
+            "params": [ { "name": "limit", "value": "10", "type": "query", "description": "Results per page." } ]
+          },
+          "docs": "Lists money-movement transactions with filters and cursor pagination."
+        },
+        {
+          "info": { "name": "Get a transaction.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/transactions/:transaction_id",
+            "params": [ { "name": "transaction_id", "value": "", "type": "path", "description": "The transaction ID." } ]
+          },
+          "docs": "Retrieves a single transaction by ID. (Modeled representative.)"
+        }
+      ]
+    },
+    {
+      "info": { "name": "Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a customer.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/customers",
+            "headers": [
+              { "name": "api-version", "value": "2020-10-31" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{\n  \"reference_id\": \"cust-001\",\n  \"type\": \"INDIVIDUAL\",\n  \"individual_detail\": { \"given_names\": \"Jane\", \"surname\": \"Doe\" }\n}" }
+          },
+          "docs": "Creates a customer record for later use with a payments endpoint."
+        },
+        {
+          "info": { "name": "List customers.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/customers?reference_id=cust-001",
+            "headers": [ { "name": "api-version", "value": "2020-10-31" } ],
+            "params": [ { "name": "reference_id", "value": "cust-001", "type": "query", "description": "The customer reference ID." } ]
+          },
+          "docs": "Retrieves customers matching the given reference_id."
+        },
+        {
+          "info": { "name": "Get a customer.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/customers/:customer_id",
+            "params": [ { "name": "customer_id", "value": "", "type": "path", "description": "The customer ID." } ]
+          },
+          "docs": "Retrieves a customer by ID. (Modeled representative.)"
+        },
+        {
+          "info": { "name": "Update a customer.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.xendit.co/customers/:customer_id",
+            "headers": [ { "name": "Content-Type", "value": "application/json" } ],
+            "params": [ { "name": "customer_id", "value": "", "type": "path", "description": "The customer ID." } ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Updates a customer record. (Modeled representative.)"
+        }
+      ]
+    },
+    {
+      "info": { "name": "Refunds", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a refund.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/refunds",
+            "headers": [ { "name": "Content-Type", "value": "application/json" } ],
+            "body": { "type": "json", "data": "{\n  \"payment_request_id\": \"pr-xxxxxxxx\",\n  \"reason\": \"REQUESTED_BY_CUSTOMER\",\n  \"amount\": 15000\n}" }
+          },
+          "docs": "Initiates a full or partial refund for a successful payment request."
+        },
+        {
+          "info": { "name": "Get a refund.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/refunds/:refund_id",
+            "params": [ { "name": "refund_id", "value": "", "type": "path", "description": "The refund ID." } ]
+          },
+          "docs": "Retrieves a refund by ID. (Modeled representative.)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

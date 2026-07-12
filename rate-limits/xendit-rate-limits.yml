@@ -1,0 +1,70 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Xendit
+providerId: xendit
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Fintech
+- Southeast Asia
+- Rate Limiting
+- Quotas
+description: >-
+  Xendit applies default per-endpoint, per-account request-rate limits that
+  differ by environment. Test mode is limited to 60 requests per minute (RPM)
+  per endpoint per account, and live mode to 600 RPM per endpoint per account.
+  A separate per-IP ceiling of 18,000 requests per minute applies across each
+  unique source IP. Some endpoints publish their own limits in their API
+  reference section that override these defaults. When a limit is exceeded the
+  API returns HTTP 429 with the error code RATE_LIMIT_EXCEEDED.
+notes: >-
+  Limits are grounded in Xendit's public rate-limit documentation as of the
+  review date but may vary per endpoint and per negotiated merchant agreement.
+  Verify against https://docs.xendit.co/apidocs/rate-limits and the individual
+  API reference sections during reconciliation.
+sources:
+- https://docs.xendit.co/apidocs/rate-limits
+- https://docs.xendit.co/apidocs/quick-setup
+responseCodes:
+  throttled: 429
+headers:
+- name: Rate-Limit-Limit
+  description: Total request quota for the current window.
+- name: Rate-Limit-Remaining
+  description: Requests still available in the current window.
+- name: Rate-Limit-Reset
+  description: Seconds remaining until the quota refreshes.
+limits:
+- name: Test Mode Requests
+  scope: endpoint-per-account
+  metric: requests
+  limit: 60 per minute
+  notes: Default test-mode ceiling per endpoint per account.
+- name: Live Mode Requests
+  scope: endpoint-per-account
+  metric: requests
+  limit: 600 per minute
+  notes: Default live-mode ceiling per endpoint per account.
+- name: Per-IP Requests
+  scope: ip
+  metric: requests
+  limit: 18000 per minute
+  notes: Applies to each unique source IP address across endpoints.
+- name: Per-Endpoint Overrides
+  scope: endpoint
+  metric: requests
+  limit: varies
+  notes: Some endpoints publish their own limit in their API reference section.
+policies:
+- name: Throttling Response
+  description: Exceeding a limit returns HTTP 429 with error code RATE_LIMIT_EXCEEDED.
+- name: Backoff Strategy
+  description: Clients should honor the Rate-Limit-Reset header and apply exponential backoff with jitter on 429 responses.
+- name: Idempotency
+  description: Money-moving endpoints (e.g. payouts) accept an Idempotency-key header so retried requests do not create duplicates.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

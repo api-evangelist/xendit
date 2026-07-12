@@ -1,0 +1,194 @@
+aid: xendit
+url: https://raw.githubusercontent.com/api-evangelist/xendit/refs/heads/main/apis.yml
+name: Xendit
+kind: company
+description: Xendit is a payments infrastructure provider for Southeast Asia, giving
+  businesses in Indonesia, the Philippines, and the wider region a single REST API
+  to accept payments, disburse funds, and manage money movement. The unified Payments
+  API accepts virtual accounts, e-wallets (OVO, DANA, GoPay, ShopeePay, GCash,
+  GrabPay, Maya), QR (QRIS / QR Ph), cards, direct debit, and retail outlets through
+  Payment Requests and Payment Tokens; complementary APIs cover hosted Invoices,
+  Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All
+  requests are authenticated with a secret API key over HTTP Basic against the base
+  host https://api.xendit.co.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Payments
+- Fintech
+- Payment Gateway
+- Southeast Asia
+- Indonesia
+- Philippines
+- Disbursements
+- E-Wallet
+- Virtual Accounts
+- Cards
+- Financial Infrastructure
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: xendit:xendit-payment-requests-api
+  name: Xendit Payment Requests API
+  tags:
+  - Payments
+  - Payment Requests
+  - Virtual Accounts
+  - E-Wallet
+  - Cards
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/create-payment-request
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/introduction
+    type: Documentation
+  - url: https://docs.xendit.co/apidocs/create-payment-request
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: The unified Payments API surface. Create, retrieve, and cancel payment
+    requests that charge end users across every Xendit channel - virtual accounts,
+    e-wallets, QR (QRIS / QR Ph), cards, direct debit, and retail outlets. Requires
+    the api-version header (2024-11-11).
+- aid: xendit:xendit-payment-tokens-api
+  name: Xendit Payment Tokens API
+  tags:
+  - Payment Methods
+  - Tokens
+  - Recurring
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/create-payment-token
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/create-payment-token
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: Save an end user's payment method as a reusable payment token for
+    future and recurring transactions, then reference it from a payment request.
+    Part of the v3 Payments API and gated by the api-version header (2024-11-11).
+- aid: xendit:xendit-invoices-api
+  name: Xendit Invoices API
+  tags:
+  - Invoices
+  - Payment Links
+  - Checkout
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/payment-link
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/payment-link
+    type: Documentation
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: Create Xendit-hosted invoices / payment links that present every
+    enabled payment channel on a single checkout page. Create an invoice, retrieve
+    it, list invoices, and expire an outstanding invoice.
+- aid: xendit:xendit-payouts-api
+  name: Xendit Payouts API
+  tags:
+  - Payouts
+  - Disbursements
+  - Transfers
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/payouts-introduction
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/payouts-introduction
+    type: Documentation
+  - url: https://docs.xendit.co/apidocs/create-payout-v3
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: Disburse funds to bank accounts and e-wallets across the region. Create
+    a payout, retrieve it by ID, and cancel a pending payout. The v3 Payouts API
+    supersedes the legacy Disbursement product.
+- aid: xendit:xendit-balance-api
+  name: Xendit Balance API
+  tags:
+  - Balance
+  - Wallet
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/get-balance
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/get-balance
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: Retrieve your Xendit account balance for a given account type (CASH or
+    HOLDING) and currency, optionally at a point in time. Supports the multi-currency
+    balances Xendit holds across the region.
+- aid: xendit:xendit-transactions-api
+  name: Xendit Transactions API
+  tags:
+  - Transactions
+  - Ledger
+  - Reporting
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/list-transactions
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/list-transactions
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: List the money-movement transactions on your account with rich filters
+    (type, status, channel, currency, amount, created/updated date ranges) and
+    cursor pagination, and retrieve a single transaction by ID.
+- aid: xendit:xendit-customers-api
+  name: Xendit Customers API
+  tags:
+  - Customers
+  - KYC
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/create-customer-request
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/create-customer-request
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: Create and manage customer records - individual or business - that
+    can be attached to payment requests, payment tokens, and payouts. Create a
+    customer, list customers by reference, retrieve one, and update it.
+- aid: xendit:xendit-refunds-api
+  name: Xendit Refunds API
+  tags:
+  - Refunds
+  - Payments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.xendit.co/apidocs/refund-payment-request
+  baseURL: https://api.xendit.co
+  properties:
+  - url: https://docs.xendit.co/apidocs/refund-payment-request
+    type: APIReference
+  - url: openapi/xendit-openapi.yml
+    type: OpenAPI
+  description: Initiate a full or partial refund against a successful payment request
+    and retrieve refund status. Refund webhooks notify your systems as the refund
+    settles.
+common:
+- type: DomainSecurity
+  url: security/xendit-domain-security.yml
+- type: Authentication
+  url: authentication/xendit-authentication.yml
+- type: GitHubOrganization
+  url: https://github.com/xendit
+- type: LinkedIn
+  url: https://www.linkedin.com/company/xendit
+- type: Website
+  url: https://www.xendit.co
+- type: Documentation
+  url: https://docs.xendit.co
+- type: Plans
+  url: plans/xendit-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/xendit-rate-limits.yml
+- type: FinOps
+  url: finops/xendit-finops.yml
+- url: https://www.xendit.co/en/blog/
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

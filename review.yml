@@ -1,0 +1,139 @@
+aid: xendit
+name: Xendit
+review:
+  question: Does Xendit expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Xendit's public developer surface is
+    request/response REST over HTTPS (base https://api.xendit.co) plus
+    server-to-merchant webhooks / callbacks (payment, refund, payout, session,
+    report, and account notifications). Webhooks are Xendit-initiated HTTP POST
+    callbacks to a merchant-configured URL - they are not a WebSocket, SSE, or
+    other persistent server-push transport on Xendit's own API, and there is no
+    documented ws:// or wss:// endpoint to model. Under current API Evangelist
+    scope, outbound webhooks alone do not warrant an AsyncAPI document.
+findings:
+  summary: |
+    Xendit does not publish a documented public WebSocket API. Xendit is a
+    Southeast Asian payments infrastructure provider. Its public API is a
+    RESTful HTTPS API rooted at https://api.xendit.co, authenticated with a
+    secret API key over HTTP Basic (the API key is the username, the password is
+    empty). The modern unified Payments API uses versioned resources
+    (/v3/payment_requests, /v3/payment_tokens, /v3/payouts, /refunds) gated by
+    an api-version header (2024-11-11 for the v3 Payments API), alongside
+    established products such as hosted Invoices (/v2/invoices), Balance
+    (/balance), Transactions (/transactions), and Customers (/customers).
+    Asynchronous payment, payout, refund, and account status updates are
+    delivered by outbound webhooks / callbacks (merchant-configured HTTPS POST
+    endpoints), not by any realtime, bidirectional, or streaming WebSocket
+    (ws:// or wss://) connection. No WebSocket endpoint is documented anywhere in
+    the Xendit API reference as of the review date.
+  accessModel: |
+    Self-serve. Anyone can register for a Xendit dashboard account and
+    immediately obtain test-mode and (after business verification) live-mode
+    secret API keys. There is no waitlist or partner-gate for basic API access.
+    Test keys hit the same base host and let developers simulate payments; live
+    keys move real money once the account is activated.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.xendit.co
+      documented: true
+      note: All documented Xendit API products are HTTPS REST under this single host.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: >-
+        Xendit posts asynchronous event notifications (payment, refund, payout,
+        session, report, account) to a merchant-configured callback URL.
+        Server-to-endpoint HTTP callback, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: >-
+        No WebSocket endpoint is documented in Xendit's API reference for any
+        product (payments, payouts, balance, transactions) as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://api.xendit.co/v3/payment_requests
+    - GET    https://api.xendit.co/v3/payment_requests/{payment_request_id}
+    - POST   https://api.xendit.co/v3/payment_requests/{payment_request_id}/cancel
+    - POST   https://api.xendit.co/v3/payment_tokens
+    - POST   https://api.xendit.co/v2/invoices
+    - POST   https://api.xendit.co/v3/payouts
+    - GET    https://api.xendit.co/v3/payouts/{payout_id}
+    - GET    https://api.xendit.co/balance
+    - GET    https://api.xendit.co/transactions
+    - POST   https://api.xendit.co/customers
+    - GET    https://api.xendit.co/customers
+    - POST   https://api.xendit.co/refunds
+  endpointsModeledRepresentative:
+    - GET    https://api.xendit.co/v2/invoices
+    - GET    https://api.xendit.co/v2/invoices/{invoice_id}
+    - POST   https://api.xendit.co/invoices/{invoice_id}/expire!
+    - POST   https://api.xendit.co/v3/payouts/{payout_id}/cancel
+    - GET    https://api.xendit.co/transactions/{transaction_id}
+    - GET    https://api.xendit.co/customers/{customer_id}
+    - PATCH  https://api.xendit.co/customers/{customer_id}
+    - GET    https://api.xendit.co/refunds/{refund_id}
+  modeledNote: |
+    The "modeled representative" endpoints above follow Xendit's documented
+    resource-and-verb conventions (list/get/update on a created resource, the
+    long-standing v2 invoice expire endpoint) but were not each individually
+    re-confirmed against a published reference page at authoring time. They are
+    included as a realistic, consistent subset and flagged here for honesty.
+    The pricing (finops), plans, and rate-limit tiers are grounded in Xendit's
+    public pricing and rate-limit documentation but per-transaction rates vary
+    by country, channel, and negotiated merchant terms; finops/plans are marked
+    reconciled: false.
+  websocketNote: |
+    Confirmed false. Xendit's asynchronous notification mechanism is outbound
+    webhooks, which the documentation describes as HTTP callbacks to a
+    merchant-configured URL. No persistent bidirectional socket is offered.
+sources:
+  - url: https://docs.xendit.co/apidocs/quick-setup
+    type: Documentation
+    note: Confirms HTTP Basic auth with secret API key as username, empty password.
+  - url: https://docs.xendit.co/apidocs/create-payment-request
+    type: APIReference
+    note: POST /v3/payment_requests on base https://api.xendit.co; api-version 2024-11-11.
+  - url: https://docs.xendit.co/apidocs/get-payment-request
+    type: APIReference
+    note: GET /v3/payment_requests/{payment_request_id}.
+  - url: https://docs.xendit.co/apidocs/cancel-payment-request
+    type: APIReference
+    note: POST /v3/payment_requests/{payment_request_id}/cancel.
+  - url: https://docs.xendit.co/apidocs/create-payment-token
+    type: APIReference
+    note: POST /v3/payment_tokens.
+  - url: https://docs.xendit.co/apidocs/create-payout-v3
+    type: APIReference
+    note: POST /v3/payouts; get by id at /v3/payouts/{payout_id}.
+  - url: https://docs.xendit.co/apidocs/get-balance
+    type: APIReference
+    note: GET /balance with account_type, currency, at_timestamp query params.
+  - url: https://docs.xendit.co/apidocs/list-transactions
+    type: APIReference
+    note: GET /transactions with rich filters and cursor pagination.
+  - url: https://docs.xendit.co/apidocs/create-customer-request
+    type: APIReference
+    note: POST /customers.
+  - url: https://docs.xendit.co/apidocs/refund-payment-request
+    type: APIReference
+    note: POST /refunds against a successful payment request.
+  - url: https://docs.xendit.co/apidocs/rate-limits
+    type: Documentation
+    note: 60 RPM test / 600 RPM live per endpoint per account; 429 RATE_LIMIT_EXCEEDED.
+  - url: https://github.com/xendit
+    type: SourceCode
+    note: Official SDKs (node, php, go, python, java) generated from the Xendit API.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists on Xendit's own API. Xendit's public
+    API is request/response REST over HTTPS with outbound webhooks for async
+    notifications. No AsyncAPI document was created because there is no
+    server-push transport (WebSocket or SSE) on Xendit's own API to model.

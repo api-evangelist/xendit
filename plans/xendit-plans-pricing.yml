@@ -1,0 +1,146 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Xendit
+providerId: xendit
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Fintech
+- Southeast Asia
+- Indonesia
+- Philippines
+- Plans
+description: >-
+  Xendit does not sell API access on subscription tiers. Access is self-serve
+  and free to integrate: create a dashboard account, get test keys immediately,
+  and get live keys after business verification. Xendit earns revenue on a
+  usage / per-transaction basis - a payment-method fee (percentage and/or flat)
+  on money accepted, and a payout fee on money disbursed, plus applicable local
+  taxes (e.g. 11% PPN VAT in Indonesia). Rates vary by country, channel, and
+  volume; enterprise merchants negotiate custom rates. The figures here are
+  representative and not reconciled.
+notes: >-
+  Per-transaction rates change and differ by market. Verify country-specific
+  pricing at https://www.xendit.co/en-id/pricing/ (Indonesia) and
+  https://www.xendit.co/en-ph/pricing/ (Philippines) and in the Billing Fee
+  Structure page of the Xendit dashboard during reconciliation.
+sources:
+- https://www.xendit.co/en/pricing/
+- https://www.xendit.co/en-id/pricing/
+- https://www.xendit.co/en-ph/pricing/
+- https://docs.xendit.co/docs/transaction-fees
+plans:
+- id: xendit-self-serve
+  name: Self-Serve (Pay As You Go)
+  type: usage
+  description: >-
+    Free to sign up and integrate with no monthly platform fee. Test-mode keys
+    are available immediately; live-mode keys unlock after business
+    verification. Xendit charges per successful transaction (acceptance) and per
+    payout (disbursement). Rates below are representative Indonesia (IDR) and
+    Philippines (PHP) examples.
+  entries:
+  - label: Virtual Account (Indonesia)
+    name: va_id
+    type: flat
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: ID
+    unit: 1
+    price: approx IDR 4,000 processing fee (channel fee varies by bank)
+    userMultiplied: false
+  - label: E-Wallet (Indonesia)
+    name: ewallet_id
+    type: percent
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: ID
+    unit: 1
+    price: approx 3.0-5.5% + IDR 4,000 (OVO/DANA/GoPay/ShopeePay)
+    userMultiplied: false
+  - label: QRIS (Indonesia)
+    name: qris_id
+    type: percent
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: ID
+    unit: 1
+    price: approx 0.70% + IDR 4,000 (incl. VAT)
+    userMultiplied: false
+  - label: Cards (Indonesia)
+    name: cards_id
+    type: percent
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: ID
+    unit: 1
+    price: approx 2.90% + IDR 2,000 + IDR 4,000 (Visa/Mastercard/JCB)
+    userMultiplied: false
+  - label: E-Wallet (Philippines)
+    name: ewallet_ph
+    type: percent
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: PH
+    unit: 1
+    price: approx 2.0-3.2% + PHP 11.00 (GCash/GrabPay/Maya/ShopeePay)
+    userMultiplied: false
+  - label: Cards (Philippines)
+    name: cards_ph
+    type: percent
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: PH
+    unit: 1
+    price: approx 3.5% domestic / 4.5% international + PHP 11.00
+    userMultiplied: false
+  - label: Payouts / Disbursements
+    name: payouts
+    type: percent
+    metric: transaction
+    limit: -1
+    timeFrame: transaction
+    geo: global
+    unit: 1
+    price: approx 1.0% + fixed fee (min IDR 2,500 / PHP 15.00)
+    userMultiplied: false
+  elements:
+  - name: Unified Payments API
+  - name: Hosted Invoices / Payment Links
+  - name: Payouts / Disbursements
+  - name: Test and Live Environments
+- id: xendit-enterprise
+  name: Enterprise / Custom
+  type: enterprise
+  description: >-
+    Negotiated per-transaction rates, volume discounts, dedicated support, and
+    xenPlatform multi-account (marketplace) arrangements for high-volume
+    merchants and platforms. Contact Xendit sales.
+  entries:
+  - label: Custom Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Negotiated Transaction Rates
+  - name: Volume Discounts
+  - name: xenPlatform Sub-Accounts
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

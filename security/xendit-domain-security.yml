@@ -1,0 +1,32 @@
+generated: '2026-07-12'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: api.xendit.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  2 02:01:22 2026 GMT
+  hsts: false
+  note: Base API host. Returns HTTP 403 to unauthenticated root requests, as expected.
+- host: www.xendit.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 25 14:27:55 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_preload: true
+- host: docs.xendit.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 14 07:09:56 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+  hsts_include_subdomains: true
+  hsts_preload: true
+domains:
+- domain: xendit.co
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

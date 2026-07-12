@@ -1,0 +1,21 @@
+generated: '2026-07-12'
+method: derived
+source: openapi/xendit-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: >-
+    HTTP Basic Access Authentication. Use your Xendit secret API key as the
+    username and leave the password empty; the client Base64-encodes
+    "SECRET_KEY:" into the Authorization header. Secret keys are issued
+    self-serve from the Xendit dashboard in both test mode and (after business
+    verification) live mode. An optional `for-user-id` header targets a
+    xenPlatform sub-account, and the v3 Payments API additionally requires an
+    `api-version` header (2024-11-11).
+  sources:
+  - openapi/xendit-openapi.yml
+  - https://docs.xendit.co/apidocs/quick-setup
