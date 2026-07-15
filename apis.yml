@@ -169,6 +169,8 @@ apis:
     and retrieve refund status. Refund webhooks notify your systems as the refund
     settles.
 common:
+- type: AgenticAccess
+  url: agentic-access/xendit-agentic-access.yml
 - type: DomainSecurity
   url: security/xendit-domain-security.yml
 - type: Authentication
