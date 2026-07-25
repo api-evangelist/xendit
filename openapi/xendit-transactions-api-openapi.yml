@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance Transactions API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Transactions
+  description: List and retrieve money-movement transactions.
+paths:
+  /transactions:
+    get:
+      operationId: listTransactions
+      tags:
+      - Transactions
+      summary: List transactions
+      description: Lists money-movement transactions on your account with filters and cursor-based pagination.
+      parameters:
+      - name: types
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: statuses
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: channel_categories
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: reference_id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: currency
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+      - name: after_id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: before_id
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A paginated list of transactions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction'
+                  has_more:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /transactions/{transaction_id}:
+    parameters:
+    - name: transaction_id
+      in: path
+      required: true
+      description: The ID of the transaction.
+      schema:
+        type: string
+    get:
+      operationId: getTransactionById
+      tags:
+      - Transactions
+      summary: Get a transaction
+      description: Retrieves a single transaction by ID. Modeled from Xendit's documented transaction resource conventions.
+      responses:
+        '200':
+          description: The requested transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        type:
+          type: string
+          description: Transaction type, e.g. PAYMENT, DISBURSEMENT, REFUND, FEE.
+        status:
+          type: string
+          enum:
+          - PENDING
+          - SUCCESS
+          - FAILED
+          - VOIDED
+          - REVERSED
+        channel_category:
+          type: string
+        reference_id:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.

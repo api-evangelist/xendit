@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Balance
+  description: Retrieve account balances by type and currency.
+paths:
+  /balance:
+    get:
+      operationId: getBalance
+      tags:
+      - Balance
+      summary: Get balance
+      description: Retrieves the balance of your Xendit account for a given account type and currency, optionally at a point in time.
+      parameters:
+      - name: account_type
+        in: query
+        required: false
+        description: Account type to query.
+        schema:
+          type: string
+          enum:
+          - CASH
+          - HOLDING
+          default: CASH
+      - name: currency
+        in: query
+        required: false
+        description: ISO 4217 currency code.
+        schema:
+          type: string
+          enum:
+          - IDR
+          - PHP
+          - USD
+          - VND
+          - THB
+          - MYR
+          - SGD
+          - EUR
+          - GBP
+          - HKD
+          - AUD
+      - name: at_timestamp
+        in: query
+        required: false
+        description: ISO 8601 timestamp to query a historical balance.
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/ForUserId'
+      responses:
+        '200':
+          description: The account balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+  schemas:
+    Balance:
+      type: object
+      properties:
+        balance:
+          type: number
+          description: Current balance for the requested account type and currency.
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.

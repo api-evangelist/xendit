@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance Refunds API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Refunds
+  description: Refund successful payment requests.
+paths:
+  /refunds:
+    post:
+      operationId: createRefund
+      tags:
+      - Refunds
+      summary: Create a refund
+      description: Initiates a full or partial refund for a successful payment request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundInput'
+      responses:
+        '200':
+          description: The created refund.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Refund'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /refunds/{refund_id}:
+    parameters:
+    - name: refund_id
+      in: path
+      required: true
+      description: The ID of the refund.
+      schema:
+        type: string
+    get:
+      operationId: getRefundById
+      tags:
+      - Refunds
+      summary: Get a refund
+      description: Retrieves a refund by ID. Modeled from Xendit's documented refund resource conventions.
+      responses:
+        '200':
+          description: The requested refund.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Refund'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Refund:
+      type: object
+      properties:
+        refund_id:
+          type: string
+        payment_request_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - SUCCEEDED
+          - FAILED
+          - CANCELLED
+        amount:
+          type: number
+        currency:
+          type: string
+        reason:
+          type: string
+        created:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    RefundInput:
+      type: object
+      required:
+      - payment_request_id
+      - reason
+      properties:
+        payment_request_id:
+          type: string
+          description: The successful payment request to refund.
+        reason:
+          type: string
+          enum:
+          - FRAUDULENT
+          - DUPLICATE
+          - REQUESTED_BY_CUSTOMER
+          - CANCELLATION
+          - OTHERS
+        amount:
+          type: number
+          description: Amount to refund; omit for a full refund.
+        currency:
+          type: string
+        reference_id:
+          type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.

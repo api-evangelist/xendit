@@ -1,0 +1,219 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance Invoices API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Invoices
+  description: Xendit-hosted invoices / payment links.
+paths:
+  /v2/invoices:
+    post:
+      operationId: createInvoice
+      tags:
+      - Invoices
+      summary: Create an invoice
+      description: Creates a Xendit-hosted invoice / payment link that presents every enabled payment channel on a single checkout page.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceInput'
+      responses:
+        '200':
+          description: The created invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      operationId: getInvoices
+      tags:
+      - Invoices
+      summary: List invoices
+      description: Lists invoices, filterable by parameters such as external_id and status.
+      parameters:
+      - name: external_id
+        in: query
+        required: false
+        description: Filter invoices by the merchant-supplied external ID.
+        schema:
+          type: string
+      - name: statuses
+        in: query
+        required: false
+        description: Filter by invoice status, e.g. ["PENDING","PAID","EXPIRED"].
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+      responses:
+        '200':
+          description: A list of invoices.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/invoices/{invoice_id}:
+    parameters:
+    - $ref: '#/components/parameters/InvoiceId'
+    get:
+      operationId: getInvoiceById
+      tags:
+      - Invoices
+      summary: Get an invoice
+      description: Retrieves an invoice by its Xendit ID.
+      responses:
+        '200':
+          description: The requested invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /invoices/{invoice_id}/expire!:
+    parameters:
+    - $ref: '#/components/parameters/InvoiceId'
+    post:
+      operationId: expireInvoice
+      tags:
+      - Invoices
+      summary: Expire an invoice
+      description: Manually expires an outstanding invoice so it can no longer be paid.
+      responses:
+        '200':
+          description: The expired invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    InvoiceInput:
+      type: object
+      required:
+      - external_id
+      - amount
+      properties:
+        external_id:
+          type: string
+          description: Unique merchant-supplied identifier for the invoice.
+        amount:
+          type: number
+        payer_email:
+          type: string
+          format: email
+        description:
+          type: string
+        currency:
+          type: string
+        invoice_duration:
+          type: integer
+          description: Seconds until the invoice expires.
+        success_redirect_url:
+          type: string
+          format: uri
+        failure_redirect_url:
+          type: string
+          format: uri
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        external_id:
+          type: string
+        user_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - PAID
+          - SETTLED
+          - EXPIRED
+        merchant_name:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        invoice_url:
+          type: string
+          format: uri
+        expiry_date:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    InvoiceId:
+      name: invoice_id
+      in: path
+      required: true
+      description: The Xendit ID of the invoice.
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.

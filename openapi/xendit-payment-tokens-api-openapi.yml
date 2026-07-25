@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance Payment Tokens API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Payment Tokens
+  description: Save reusable payment methods for future and recurring charges.
+paths:
+  /v3/payment_tokens:
+    post:
+      operationId: createPaymentToken
+      tags:
+      - Payment Tokens
+      summary: Create a payment token
+      description: Saves an end user's payment method as a reusable payment token for future transactions. Requires the api-version header set to 2024-11-11.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/ForUserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentTokenInput'
+      responses:
+        '201':
+          description: The created payment token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+    ApiVersion:
+      name: api-version
+      in: header
+      required: false
+      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    PaymentToken:
+      type: object
+      properties:
+        payment_token_id:
+          type: string
+        reference_id:
+          type: string
+        channel_code:
+          type: string
+        status:
+          type: string
+          enum:
+          - REQUIRES_ACTION
+          - PENDING
+          - ACTIVE
+          - FAILED
+          - EXPIRED
+          - CANCELED
+        created:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    PaymentTokenInput:
+      type: object
+      required:
+      - reference_id
+      - country
+      - currency
+      - channel_code
+      properties:
+        reference_id:
+          type: string
+        country:
+          type: string
+        currency:
+          type: string
+        channel_code:
+          type: string
+          description: Payment channel provider code, e.g. DANA, OVO, GCASH.
+        channel_properties:
+          type: object
+          additionalProperties: true
+        customer_id:
+          type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.

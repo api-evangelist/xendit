@@ -1,0 +1,199 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance Payouts API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Payouts
+  description: Disburse funds to bank accounts and e-wallets.
+paths:
+  /v3/payouts:
+    post:
+      operationId: createPayout
+      tags:
+      - Payouts
+      summary: Create a payout
+      description: Disburses funds to a bank account or e-wallet. Requires an Idempotency-key header to safely retry without duplicate payouts.
+      parameters:
+      - $ref: '#/components/parameters/IdempotencyKey'
+      - $ref: '#/components/parameters/ForUserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutInput'
+      responses:
+        '200':
+          description: The created payout.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/payouts/{payout_id}:
+    parameters:
+    - $ref: '#/components/parameters/PayoutId'
+    get:
+      operationId: getPayoutById
+      tags:
+      - Payouts
+      summary: Get a payout
+      description: Retrieves a payout by its ID.
+      responses:
+        '200':
+          description: The requested payout.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/payouts/{payout_id}/cancel:
+    parameters:
+    - $ref: '#/components/parameters/PayoutId'
+    post:
+      operationId: cancelPayout
+      tags:
+      - Payouts
+      summary: Cancel a payout
+      description: Cancels a payout that has not yet been disbursed. Modeled from Xendit's documented payout resource conventions.
+      responses:
+        '200':
+          description: The cancelled payout.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Payout:
+      type: object
+      properties:
+        id:
+          type: string
+        reference_id:
+          type: string
+        business_id:
+          type: string
+        channel_code:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACCEPTED
+          - PENDING
+          - LOCKED
+          - CANCELLED
+          - SUCCEEDED
+          - FAILED
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    PayoutInput:
+      type: object
+      required:
+      - reference_id
+      - channel_code
+      - channel_properties
+      - amount
+      - currency
+      properties:
+        reference_id:
+          type: string
+        channel_code:
+          type: string
+          description: Destination channel, e.g. ID_BCA, PH_GCASH.
+        channel_properties:
+          type: object
+          description: Destination account details (account number, holder name).
+          additionalProperties: true
+        amount:
+          type: number
+        currency:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+  parameters:
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+    PayoutId:
+      name: payout_id
+      in: path
+      required: true
+      description: The ID of the payout.
+      schema:
+        type: string
+    IdempotencyKey:
+      name: Idempotency-key
+      in: header
+      required: false
+      description: Unique key to safely retry a request without creating a duplicate.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.

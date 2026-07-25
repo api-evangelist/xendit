@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: Xendit Balance Payment Requests API
+  description: 'Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.
+
+    Scope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit''s documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.'
+  version: '1.0'
+  contact:
+    name: Xendit
+    url: https://www.xendit.co
+servers:
+- url: https://api.xendit.co
+  description: Xendit production API (test and live keys select the environment)
+security:
+- basicAuth: []
+tags:
+- name: Payment Requests
+  description: Unified Payments API - charge end users across all channels.
+paths:
+  /v3/payment_requests:
+    post:
+      operationId: createPaymentRequest
+      tags:
+      - Payment Requests
+      summary: Create a payment request
+      description: Creates a payment request that charges an end user through a chosen channel (virtual account, e-wallet, QR, card, direct debit, or retail outlet). Requires the api-version header set to 2024-11-11.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/ForUserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequestInput'
+      responses:
+        '201':
+          description: The created payment request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequest'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/payment_requests/{payment_request_id}:
+    parameters:
+    - $ref: '#/components/parameters/PaymentRequestId'
+    get:
+      operationId: getPaymentRequest
+      tags:
+      - Payment Requests
+      summary: Get a payment request
+      description: Retrieves the status of a payment request by its ID.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      responses:
+        '200':
+          description: The requested payment request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/payment_requests/{payment_request_id}/cancel:
+    parameters:
+    - $ref: '#/components/parameters/PaymentRequestId'
+    post:
+      operationId: cancelPaymentRequest
+      tags:
+      - Payment Requests
+      summary: Cancel a payment request
+      description: Cancels a payment request, preventing the end user from completing payment. The returned object has status CANCELED.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      responses:
+        '200':
+          description: The cancelled payment request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+    PaymentRequestId:
+      name: payment_request_id
+      in: path
+      required: true
+      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
+      schema:
+        type: string
+    ApiVersion:
+      name: api-version
+      in: header
+      required: false
+      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
+      schema:
+        type: string
+  schemas:
+    PaymentRequestInput:
+      type: object
+      required:
+      - currency
+      - amount
+      properties:
+        reference_id:
+          type: string
+          description: Merchant-supplied reference for the payment request.
+        currency:
+          type: string
+          description: ISO 4217 currency code.
+        amount:
+          type: number
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (ID, PH, TH, VN, MY, SG).
+        payment_method:
+          type: object
+          description: The payment method to charge. Selects the channel - VIRTUAL_ACCOUNT, EWALLET, QR_CODE, CARD, DIRECT_DEBIT, OVER_THE_COUNTER, etc.
+          additionalProperties: true
+        customer_id:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    PaymentRequest:
+      type: object
+      properties:
+        payment_request_id:
+          type: string
+        reference_id:
+          type: string
+        business_id:
+          type: string
+        currency:
+          type: string
+        amount:
+          type: number
+        country:
+          type: string
+        status:
+          type: string
+          enum:
+          - REQUIRES_ACTION
+          - PENDING
+          - SUCCEEDED
+          - FAILED
+          - CANCELED
+        payment_method:
+          type: object
+          additionalProperties: true
+        actions:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication. Use your Xendit secret API key as the username and leave the password empty. The key is Base64-encoded into the Authorization header. Test keys and live keys select the environment.
