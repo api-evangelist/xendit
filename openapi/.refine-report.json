@@ -1,0 +1,28 @@
+{
+  "provider": "xendit",
+  "sources": [
+    "xendit-balance-api-openapi.yml",
+    "xendit-customers-api-openapi.yml",
+    "xendit-invoices-api-openapi.yml",
+    "xendit-payment-requests-api-openapi.yml",
+    "xendit-payment-tokens-api-openapi.yml",
+    "xendit-payouts-api-openapi.yml",
+    "xendit-refunds-api-openapi.yml",
+    "xendit-transactions-api-openapi.yml"
+  ],
+  "outputs": [
+    "xendit-balance-api-openapi.yml",
+    "xendit-customers-api-openapi.yml",
+    "xendit-invoices-api-openapi.yml",
+    "xendit-payment-requests-api-openapi.yml",
+    "xendit-payment-tokens-api-openapi.yml",
+    "xendit-payouts-api-openapi.yml",
+    "xendit-refunds-api-openapi.yml",
+    "xendit-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
