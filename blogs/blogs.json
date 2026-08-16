@@ -5,7 +5,7 @@
       "source": "https://www.xendit.co/en/feed/",
       "feed_url": "https://www.xendit.co/en/feed/",
       "title": "",
-      "saved": 0,
+      "saved": 7,
       "method": "feed"
     },
     {
@@ -13,9 +13,10 @@
       "feed_url": "https://www.xendit.co/en/feed/",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "discovered",
+      "error": "fetch_failed: HTTPError"
     }
   ],
-  "post_count": 11,
-  "fetched": "2026-08-06T14:08:46Z"
+  "post_count": 18,
+  "fetched": "2026-08-15T12:11:08Z"
 }
