@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit Balance Payouts API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payouts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a payout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payouts",
+            "headers": [
+              {
+                "name": "Idempotency-key",
+                "value": ""
+              },
+              {
+                "name": "for-user-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Disburses funds to a bank account or e-wallet. Requires an Idempotency-key header to safely retry without duplicate payouts."
+        },
+        {
+          "info": {
+            "name": "Get a payout",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v3/payouts/:payout_id",
+            "params": [
+              {
+                "name": "payout_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the payout."
+              }
+            ]
+          },
+          "docs": "Retrieves a payout by its ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a payout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payouts/:payout_id/cancel",
+            "params": [
+              {
+                "name": "payout_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the payout."
+              }
+            ]
+          },
+          "docs": "Cancels a payout that has not yet been disbursed. Modeled from Xendit's documented payout resource conventions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

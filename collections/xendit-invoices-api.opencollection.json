@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit Balance Invoices API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v2/invoices",
+            "params": [
+              {
+                "name": "external_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter invoices by the merchant-supplied external ID."
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter by invoice status, e.g. [\"PENDING\",\"PAID\",\"EXPIRED\"]."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lists invoices, filterable by parameters such as external_id and status."
+        },
+        {
+          "info": {
+            "name": "Create an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v2/invoices",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a Xendit-hosted invoice / payment link that presents every enabled payment channel on a single checkout page."
+        },
+        {
+          "info": {
+            "name": "Get an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v2/invoices/:invoice_id",
+            "params": [
+              {
+                "name": "invoice_id",
+                "value": "",
+                "type": "path",
+                "description": "The Xendit ID of the invoice."
+              }
+            ]
+          },
+          "docs": "Retrieves an invoice by its Xendit ID."
+        },
+        {
+          "info": {
+            "name": "Expire an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/invoices/:invoice_id/expire!",
+            "params": [
+              {
+                "name": "invoice_id",
+                "value": "",
+                "type": "path",
+                "description": "The Xendit ID of the invoice."
+              }
+            ]
+          },
+          "docs": "Manually expires an outstanding invoice so it can no longer be paid."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

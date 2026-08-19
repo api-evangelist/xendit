@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit Balance Payment Requests API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a payment request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payment_requests",
+            "headers": [
+              {
+                "name": "api-version",
+                "value": ""
+              },
+              {
+                "name": "for-user-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a payment request that charges an end user through a chosen channel (virtual account, e-wallet, QR, card, direct debit, or retail outlet). Requires the api-version header set to 2024-11-11."
+        },
+        {
+          "info": {
+            "name": "Get a payment request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/v3/payment_requests/:payment_request_id",
+            "headers": [
+              {
+                "name": "api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "payment_request_id",
+                "value": "",
+                "type": "path",
+                "description": "The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+              }
+            ]
+          },
+          "docs": "Retrieves the status of a payment request by its ID."
+        },
+        {
+          "info": {
+            "name": "Cancel a payment request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payment_requests/:payment_request_id/cancel",
+            "headers": [
+              {
+                "name": "api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "payment_request_id",
+                "value": "",
+                "type": "path",
+                "description": "The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+              }
+            ]
+          },
+          "docs": "Cancels a payment request, preventing the end user from completing payment. The returned object has status CANCELED."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

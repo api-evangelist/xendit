@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit Balance Payment Tokens API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payment Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a payment token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.xendit.co/v3/payment_tokens",
+            "headers": [
+              {
+                "name": "api-version",
+                "value": ""
+              },
+              {
+                "name": "for-user-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Saves an end user's payment method as a reusable payment token for future transactions. Requires the api-version header set to 2024-11-11."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

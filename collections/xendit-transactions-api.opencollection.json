@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit Balance Transactions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/transactions",
+            "params": [
+              {
+                "name": "types",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "channel_categories",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "reference_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lists money-movement transactions on your account with filters and cursor-based pagination."
+        },
+        {
+          "info": {
+            "name": "Get a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the transaction."
+              }
+            ]
+          },
+          "docs": "Retrieves a single transaction by ID. Modeled from Xendit's documented transaction resource conventions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

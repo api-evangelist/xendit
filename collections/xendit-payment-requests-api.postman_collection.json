@@ -1,0 +1,758 @@
+{
+  "item": [
+    {
+      "id": "e610bf36-732d-4cf7-93fa-8cf4c066df63",
+      "name": "Payment Requests",
+      "description": {
+        "content": "Unified Payments API - charge end users across all channels.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bf859d50-557d-4620-b745-486820ec5aef",
+          "name": "Create a payment request",
+          "request": {
+            "name": "Create a payment request",
+            "description": {
+              "content": "Creates a payment request that charges an end user through a chosen channel (virtual account, e-wallet, QR, card, direct debit, or retail outlet). Requires the api-version header set to 2024-11-11.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "payment_requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                "key": "api-version",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "xenPlatform sub-account (Business ID) to act on behalf of.",
+                "key": "for-user-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currency\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"reference_id\": \"<string>\",\n  \"country\": \"<string>\",\n  \"payment_method\": {\n    \"key_0\": 9046.853304770917,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 430.9155375677121\n  },\n  \"customer_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": 3632.2730380363632\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "20221479-af91-43d7-bb01-937c0d3a9434",
+              "name": "The created payment request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "xenPlatform sub-account (Business ID) to act on behalf of.",
+                    "key": "for-user-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currency\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"reference_id\": \"<string>\",\n  \"country\": \"<string>\",\n  \"payment_method\": {\n    \"key_0\": 1921.1599630672283\n  },\n  \"customer_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": 1842.891582933408,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_request_id\": \"string\",\n  \"reference_id\": \"string\",\n  \"business_id\": \"string\",\n  \"currency\": \"string\",\n  \"amount\": 8538.197934158645,\n  \"country\": \"string\",\n  \"status\": \"SUCCEEDED\",\n  \"payment_method\": {\n    \"key_0\": true\n  },\n  \"actions\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 2697.6100571840157,\n      \"key_2\": false\n    },\n    {\n      \"key_0\": 4298.473631867719,\n      \"key_1\": 4387\n    }\n  ],\n  \"created\": \"1992-11-12T19:28:12.477Z\",\n  \"updated\": \"1962-11-20T19:43:41.153Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4322cef-bb00-425e-bdb5-6d95658fc8cb",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "xenPlatform sub-account (Business ID) to act on behalf of.",
+                    "key": "for-user-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currency\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"reference_id\": \"<string>\",\n  \"country\": \"<string>\",\n  \"payment_method\": {\n    \"key_0\": 1921.1599630672283\n  },\n  \"customer_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": 1842.891582933408,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b10db6bb-7c58-4517-b694-4e24817166f6",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "xenPlatform sub-account (Business ID) to act on behalf of.",
+                    "key": "for-user-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"currency\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"reference_id\": \"<string>\",\n  \"country\": \"<string>\",\n  \"payment_method\": {\n    \"key_0\": 1921.1599630672283\n  },\n  \"customer_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": 1842.891582933408,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd26f1b0-5461-4e3c-b63c-bacb8edb4076",
+          "name": "Get a payment request",
+          "request": {
+            "name": "Get a payment request",
+            "description": {
+              "content": "Retrieves the status of a payment request by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "payment_requests",
+                ":payment_request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payment_request_id",
+                  "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                "key": "api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "92c3cd70-b3f1-4ca5-bf77-d5fe41e133ef",
+              "name": "The requested payment request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests",
+                    ":payment_request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_request_id",
+                      "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_request_id\": \"string\",\n  \"reference_id\": \"string\",\n  \"business_id\": \"string\",\n  \"currency\": \"string\",\n  \"amount\": 2206.188263865375,\n  \"country\": \"string\",\n  \"status\": \"PENDING\",\n  \"payment_method\": {\n    \"key_0\": false,\n    \"key_1\": false\n  },\n  \"actions\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 3755.235617736845\n    },\n    {\n      \"key_0\": false\n    }\n  ],\n  \"created\": \"2003-03-06T09:36:17.872Z\",\n  \"updated\": \"1965-09-06T19:44:19.224Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa4253a8-b2c5-495a-ab36-d43bbdeb7085",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests",
+                    ":payment_request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_request_id",
+                      "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "54eee06c-4b59-4103-a44c-8f283aea157c",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests",
+                    ":payment_request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_request_id",
+                      "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "136001e0-2956-41d2-a558-44493f0c9e20",
+          "name": "Cancel a payment request",
+          "request": {
+            "name": "Cancel a payment request",
+            "description": {
+              "content": "Cancels a payment request, preventing the end user from completing payment. The returned object has status CANCELED.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "payment_requests",
+                ":payment_request_id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "payment_request_id",
+                  "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                "key": "api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f79d446-29ff-4e4a-a9d1-b2b61e6e3791",
+              "name": "The cancelled payment request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests",
+                    ":payment_request_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_request_id",
+                      "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"payment_request_id\": \"string\",\n  \"reference_id\": \"string\",\n  \"business_id\": \"string\",\n  \"currency\": \"string\",\n  \"amount\": 2206.188263865375,\n  \"country\": \"string\",\n  \"status\": \"PENDING\",\n  \"payment_method\": {\n    \"key_0\": false,\n    \"key_1\": false\n  },\n  \"actions\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 3755.235617736845\n    },\n    {\n      \"key_0\": false\n    }\n  ],\n  \"created\": \"2003-03-06T09:36:17.872Z\",\n  \"updated\": \"1965-09-06T19:44:19.224Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b10aa182-3b5d-4667-ac3d-6d07bbb5add7",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests",
+                    ":payment_request_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_request_id",
+                      "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7dbd14d-2283-4aa6-8a04-0368b0f7f456",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "payment_requests",
+                    ":payment_request_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "payment_request_id",
+                      "description": "(Required) The 39-character payment request ID (e.g. pr-xxxxxxxx-...)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.",
+                    "key": "api-version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.xendit.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3bbc7a0a-bf3f-4b69-8b41-e5ef9e508b0d",
+    "name": "Xendit Balance Payment Requests API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Xendit is a payments infrastructure provider for Southeast Asia. This OpenAPI document describes a representative, high-fidelity subset of the public Xendit REST API grounded in the developer documentation at https://docs.xendit.co - the unified Payments API (Payment Requests and Payment Tokens), hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key passed over HTTP Basic (the API key is the username, the password is left empty) against the base host https://api.xendit.co.\nScope note: The newer Payments API resources (payment_requests, payment_tokens, payouts v3, refunds) require an `api-version` header. Some read/update operations here (get transaction by ID, get/update customer, get refund by ID, cancel payout, expire invoice) follow Xendit's documented resource conventions but were not each individually confirmed against a published reference page at authoring time; they are modeled as representative and flagged in review.yml. Xendit does not publish a machine -readable OpenAPI file at a single canonical public URL; this document was authored by API Evangelist from the human documentation.\n\nContact Support:\n Name: Xendit",
+      "type": "text/plain"
+    }
+  }
+}

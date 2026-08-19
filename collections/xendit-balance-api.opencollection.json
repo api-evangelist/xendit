@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Xendit Balance API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Balance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.xendit.co/balance",
+            "headers": [
+              {
+                "name": "for-user-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_type",
+                "value": "",
+                "type": "query",
+                "description": "Account type to query."
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "ISO 4217 currency code."
+              },
+              {
+                "name": "at_timestamp",
+                "value": "",
+                "type": "query",
+                "description": "ISO 8601 timestamp to query a historical balance."
+              }
+            ]
+          },
+          "docs": "Retrieves the balance of your Xendit account for a given account type and currency, optionally at a point in time."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
