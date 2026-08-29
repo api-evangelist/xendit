@@ -11,6 +11,18 @@ description: Xendit is a payments infrastructure provider for Southeast Asia, gi
   Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All
   requests are authenticated with a secret API key over HTTP Basic against the base
   host https://api.xendit.co.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
