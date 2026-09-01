@@ -181,7 +181,7 @@ apis:
   humanURL: https://docs.xendit.co/apidocs/create-payment-request
   baseURL: https://api.xendit.co
   tags:
-  - Payment Tokens
+  - Payment-Tokens
   tags_raw:
   - Payment Tokens
   properties:
