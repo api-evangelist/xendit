@@ -1,14 +1,7 @@
 {
   "provider": "xendit",
   "sources": [
-    "xendit-balance-api-openapi.yml",
-    "xendit-customers-api-openapi.yml",
-    "xendit-invoices-api-openapi.yml",
-    "xendit-payment-requests-api-openapi.yml",
-    "xendit-payment-tokens-api-openapi.yml",
-    "xendit-payouts-api-openapi.yml",
-    "xendit-refunds-api-openapi.yml",
-    "xendit-transactions-api-openapi.yml"
+    "_original/xendit-openapi.yml"
   ],
   "outputs": [
     "xendit-balance-api-openapi.yml",
@@ -23,6 +16,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "xendit-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "xendit-balance-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-payment-requests-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-payment-tokens-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-payouts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-refunds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "xendit-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
