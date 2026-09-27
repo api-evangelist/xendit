@@ -88,14 +88,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
-        message:
-          type: string
     PaymentRequestInput:
       type: object
       required:
@@ -124,6 +116,14 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
     PaymentRequest:
       type: object
       properties:
@@ -161,37 +161,9 @@ components:
         updated:
           type: string
           format: date-time
-  parameters:
-    ForUserId:
-      name: for-user-id
-      in: header
-      required: false
-      description: xenPlatform sub-account (Business ID) to act on behalf of.
-      schema:
-        type: string
-    ApiVersion:
-      name: api-version
-      in: header
-      required: false
-      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
-      schema:
-        type: string
-    PaymentRequestId:
-      name: payment_request_id
-      in: path
-      required: true
-      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
-      schema:
-        type: string
   responses:
     BadRequest:
       description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
       content:
         application/json:
           schema:
@@ -202,6 +174,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    ApiVersion:
+      name: api-version
+      in: header
+      required: false
+      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
+      schema:
+        type: string
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+    PaymentRequestId:
+      name: payment_request_id
+      in: path
+      required: true
+      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http

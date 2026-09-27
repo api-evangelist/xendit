@@ -65,6 +65,25 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -73,30 +92,6 @@ components:
           type: string
           description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
         message:
-          type: string
-    RefundInput:
-      type: object
-      required:
-      - payment_request_id
-      - reason
-      properties:
-        payment_request_id:
-          type: string
-          description: The successful payment request to refund.
-        reason:
-          type: string
-          enum:
-          - FRAUDULENT
-          - DUPLICATE
-          - REQUESTED_BY_CUSTOMER
-          - CANCELLATION
-          - OTHERS
-        amount:
-          type: number
-          description: Amount to refund; omit for a full refund.
-        currency:
-          type: string
-        reference_id:
           type: string
     Refund:
       type: object
@@ -121,25 +116,30 @@ components:
         created:
           type: string
           format: date-time
-  responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    RefundInput:
+      type: object
+      required:
+      - payment_request_id
+      - reason
+      properties:
+        payment_request_id:
+          type: string
+          description: The successful payment request to refund.
+        reason:
+          type: string
+          enum:
+          - FRAUDULENT
+          - DUPLICATE
+          - REQUESTED_BY_CUSTOMER
+          - CANCELLATION
+          - OTHERS
+        amount:
+          type: number
+          description: Amount to refund; omit for a full refund.
+        currency:
+          type: string
+        reference_id:
+          type: string
   securitySchemes:
     basicAuth:
       type: http
