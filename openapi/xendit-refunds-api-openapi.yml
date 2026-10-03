@@ -66,12 +66,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -80,6 +74,12 @@ components:
             $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:
@@ -93,29 +93,6 @@ components:
           description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
         message:
           type: string
-    Refund:
-      type: object
-      properties:
-        refund_id:
-          type: string
-        payment_request_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - PENDING
-          - SUCCEEDED
-          - FAILED
-          - CANCELLED
-        amount:
-          type: number
-        currency:
-          type: string
-        reason:
-          type: string
-        created:
-          type: string
-          format: date-time
     RefundInput:
       type: object
       required:
@@ -140,6 +117,29 @@ components:
           type: string
         reference_id:
           type: string
+    Refund:
+      type: object
+      properties:
+        refund_id:
+          type: string
+        payment_request_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - SUCCEEDED
+          - FAILED
+          - CANCELLED
+        amount:
+          type: number
+        currency:
+          type: string
+        reason:
+          type: string
+        created:
+          type: string
+          format: date-time
   securitySchemes:
     basicAuth:
       type: http

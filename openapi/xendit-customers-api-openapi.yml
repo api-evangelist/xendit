@@ -119,12 +119,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -133,6 +127,12 @@ components:
             $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
       content:
         application/json:
           schema:
@@ -151,14 +151,6 @@ components:
           updated:
             type: string
             format: date-time
-    Error:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
-        message:
-          type: string
     CustomerInput:
       type: object
       required:
@@ -188,6 +180,14 @@ components:
         metadata:
           type: object
           additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
   parameters:
     ApiVersion:
       name: api-version

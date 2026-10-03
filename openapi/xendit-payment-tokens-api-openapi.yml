@@ -44,19 +44,56 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+    ApiVersion:
+      name: api-version
+      in: header
+      required: false
+      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
+      schema:
+        type: string
   schemas:
+    PaymentTokenInput:
+      type: object
+      required:
+      - reference_id
+      - country
+      - currency
+      - channel_code
+      properties:
+        reference_id:
+          type: string
+        country:
+          type: string
+        currency:
+          type: string
+        channel_code:
+          type: string
+          description: Payment channel provider code, e.g. DANA, OVO, GCASH.
+        channel_properties:
+          type: object
+          additionalProperties: true
+        customer_id:
+          type: string
     PaymentToken:
       type: object
       properties:
@@ -86,43 +123,6 @@ components:
           description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
         message:
           type: string
-    PaymentTokenInput:
-      type: object
-      required:
-      - reference_id
-      - country
-      - currency
-      - channel_code
-      properties:
-        reference_id:
-          type: string
-        country:
-          type: string
-        currency:
-          type: string
-        channel_code:
-          type: string
-          description: Payment channel provider code, e.g. DANA, OVO, GCASH.
-        channel_properties:
-          type: object
-          additionalProperties: true
-        customer_id:
-          type: string
-  parameters:
-    ApiVersion:
-      name: api-version
-      in: header
-      required: false
-      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
-      schema:
-        type: string
-    ForUserId:
-      name: for-user-id
-      in: header
-      required: false
-      description: xenPlatform sub-account (Business ID) to act on behalf of.
-      schema:
-        type: string
   securitySchemes:
     basicAuth:
       type: http

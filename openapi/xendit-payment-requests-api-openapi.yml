@@ -87,43 +87,48 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PaymentRequestId:
+      name: payment_request_id
+      in: path
+      required: true
+      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
+      schema:
+        type: string
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
+      schema:
+        type: string
+    ApiVersion:
+      name: api-version
+      in: header
+      required: false
+      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
+      schema:
+        type: string
   schemas:
-    PaymentRequestInput:
-      type: object
-      required:
-      - currency
-      - amount
-      properties:
-        reference_id:
-          type: string
-          description: Merchant-supplied reference for the payment request.
-        currency:
-          type: string
-          description: ISO 4217 currency code.
-        amount:
-          type: number
-        country:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (ID, PH, TH, VN, MY, SG).
-        payment_method:
-          type: object
-          description: The payment method to charge. Selects the channel - VIRTUAL_ACCOUNT, EWALLET, QR_CODE, CARD, DIRECT_DEBIT, OVER_THE_COUNTER, etc.
-          additionalProperties: true
-        customer_id:
-          type: string
-        description:
-          type: string
-        metadata:
-          type: object
-          additionalProperties: true
-    Error:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
-        message:
-          type: string
     PaymentRequest:
       type: object
       properties:
@@ -161,47 +166,42 @@ components:
         updated:
           type: string
           format: date-time
-  responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    ApiVersion:
-      name: api-version
-      in: header
-      required: false
-      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
-      schema:
-        type: string
-    ForUserId:
-      name: for-user-id
-      in: header
-      required: false
-      description: xenPlatform sub-account (Business ID) to act on behalf of.
-      schema:
-        type: string
-    PaymentRequestId:
-      name: payment_request_id
-      in: path
-      required: true
-      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
-      schema:
-        type: string
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    PaymentRequestInput:
+      type: object
+      required:
+      - currency
+      - amount
+      properties:
+        reference_id:
+          type: string
+          description: Merchant-supplied reference for the payment request.
+        currency:
+          type: string
+          description: ISO 4217 currency code.
+        amount:
+          type: number
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (ID, PH, TH, VN, MY, SG).
+        payment_method:
+          type: object
+          description: The payment method to charge. Selects the channel - VIRTUAL_ACCOUNT, EWALLET, QR_CODE, CARD, DIRECT_DEBIT, OVER_THE_COUNTER, etc.
+          additionalProperties: true
+        customer_id:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
   securitySchemes:
     basicAuth:
       type: http
