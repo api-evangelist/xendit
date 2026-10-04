@@ -313,6 +313,9 @@ apis:
   - type: APIReference
     url: https://docs.xendit.co/apidocs/refund-payment-request
 common:
+- type: CapabilityMap
+  url: capabilities/xendit-capability-edges.yml
+  name: Xendit Business Capability Map
 - type: AgenticAccess
   url: agentic-access/xendit-agentic-access.yml
 - type: DomainSecurity
