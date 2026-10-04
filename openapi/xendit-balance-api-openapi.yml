@@ -69,20 +69,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Balance:
-      type: object
-      properties:
-        balance:
-          type: number
-          description: Current balance for the requested account type and currency.
     Error:
       type: object
       properties:
@@ -91,6 +78,19 @@ components:
           description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
         message:
           type: string
+    Balance:
+      type: object
+      properties:
+        balance:
+          type: number
+          description: Current balance for the requested account type and currency.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     ForUserId:
       name: for-user-id

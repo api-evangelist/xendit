@@ -65,26 +65,30 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Refund:
+      type: object
+      properties:
+        refund_id:
+          type: string
+        payment_request_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - SUCCEEDED
+          - FAILED
+          - CANCELLED
+        amount:
+          type: number
+        currency:
+          type: string
+        reason:
+          type: string
+        created:
+          type: string
+          format: date-time
     Error:
       type: object
       properties:
@@ -117,29 +121,25 @@ components:
           type: string
         reference_id:
           type: string
-    Refund:
-      type: object
-      properties:
-        refund_id:
-          type: string
-        payment_request_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - PENDING
-          - SUCCEEDED
-          - FAILED
-          - CANCELLED
-        amount:
-          type: number
-        currency:
-          type: string
-        reason:
-          type: string
-        created:
-          type: string
-          format: date-time
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

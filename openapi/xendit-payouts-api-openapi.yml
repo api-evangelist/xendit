@@ -83,38 +83,19 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
-    ForUserId:
-      name: for-user-id
-      in: header
-      required: false
-      description: xenPlatform sub-account (Business ID) to act on behalf of.
-      schema:
-        type: string
     PayoutId:
       name: payout_id
       in: path
       required: true
       description: The ID of the payout.
+      schema:
+        type: string
+    ForUserId:
+      name: for-user-id
+      in: header
+      required: false
+      description: xenPlatform sub-account (Business ID) to act on behalf of.
       schema:
         type: string
     IdempotencyKey:
@@ -125,6 +106,14 @@ components:
       schema:
         type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
     Payout:
       type: object
       properties:
@@ -155,14 +144,6 @@ components:
         updated:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
-        message:
-          type: string
     PayoutInput:
       type: object
       required:
@@ -190,6 +171,25 @@ components:
         metadata:
           type: object
           additionalProperties: true
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http
