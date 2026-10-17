@@ -69,21 +69,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
-        message:
-          type: string
-    Balance:
-      type: object
-      properties:
-        balance:
-          type: number
-          description: Current balance for the requested account type and currency.
   responses:
     Unauthorized:
       description: Missing or invalid API key.
@@ -99,6 +84,21 @@ components:
       description: xenPlatform sub-account (Business ID) to act on behalf of.
       schema:
         type: string
+  schemas:
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
+    Balance:
+      type: object
+      properties:
+        balance:
+          type: number
+          description: Current balance for the requested account type and currency.
   securitySchemes:
     basicAuth:
       type: http

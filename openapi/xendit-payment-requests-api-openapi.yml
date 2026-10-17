@@ -88,14 +88,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        error_code:
-          type: string
-          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
-        message:
-          type: string
     PaymentRequest:
       type: object
       properties:
@@ -133,6 +125,14 @@ components:
         updated:
           type: string
           format: date-time
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
+        message:
+          type: string
     PaymentRequestInput:
       type: object
       required:
@@ -162,12 +162,6 @@ components:
           type: object
           additionalProperties: true
   responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -180,12 +174,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    PaymentRequestId:
-      name: payment_request_id
-      in: path
-      required: true
-      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
+    ApiVersion:
+      name: api-version
+      in: header
+      required: false
+      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
       schema:
         type: string
     ForUserId:
@@ -195,11 +195,11 @@ components:
       description: xenPlatform sub-account (Business ID) to act on behalf of.
       schema:
         type: string
-    ApiVersion:
-      name: api-version
-      in: header
-      required: false
-      description: Xendit API version date. The v3 Payments API (payment_requests, payment_tokens) expects 2024-11-11; the Customers API accepts dates such as 2020-10-31.
+    PaymentRequestId:
+      name: payment_request_id
+      in: path
+      required: true
+      description: The 39-character payment request ID (e.g. pr-xxxxxxxx-...).
       schema:
         type: string
   securitySchemes:

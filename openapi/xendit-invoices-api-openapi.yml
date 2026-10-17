@@ -125,6 +125,33 @@ components:
           description: Machine-readable Xendit error code, e.g. DATA_NOT_FOUND.
         message:
           type: string
+    InvoiceInput:
+      type: object
+      required:
+      - external_id
+      - amount
+      properties:
+        external_id:
+          type: string
+          description: Unique merchant-supplied identifier for the invoice.
+        amount:
+          type: number
+        payer_email:
+          type: string
+          format: email
+        description:
+          type: string
+        currency:
+          type: string
+        invoice_duration:
+          type: integer
+          description: Seconds until the invoice expires.
+        success_redirect_url:
+          type: string
+          format: uri
+        failure_redirect_url:
+          type: string
+          format: uri
     Invoice:
       type: object
       properties:
@@ -156,40 +183,15 @@ components:
         created:
           type: string
           format: date-time
-    InvoiceInput:
-      type: object
-      required:
-      - external_id
-      - amount
-      properties:
-        external_id:
-          type: string
-          description: Unique merchant-supplied identifier for the invoice.
-        amount:
-          type: number
-        payer_email:
-          type: string
-          format: email
-        description:
-          type: string
-        currency:
-          type: string
-        invoice_duration:
-          type: integer
-          description: Seconds until the invoice expires.
-        success_redirect_url:
-          type: string
-          format: uri
-        failure_redirect_url:
-          type: string
-          format: uri
+  parameters:
+    InvoiceId:
+      name: invoice_id
+      in: path
+      required: true
+      description: The Xendit ID of the invoice.
+      schema:
+        type: string
   responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: The request was invalid.
       content:
@@ -202,14 +204,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    InvoiceId:
-      name: invoice_id
-      in: path
-      required: true
-      description: The Xendit ID of the invoice.
-      schema:
-        type: string
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http
