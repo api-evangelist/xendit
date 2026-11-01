@@ -1,4 +1,4 @@
-# Xendit (xendit)
+# Xendit
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,217 +64,132 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Xendit is a payments infrastructure provider for Southeast Asia, giving businesses in Indonesia, the Philippines, and the wider region a single REST API to accept payments, disburse funds, and manage money movement. The unified Payments API accepts virtual accounts, e-wallets (OVO, DANA, GoPay, ShopeePay, GCash, GrabPay, Maya), QR (QRIS / QR Ph), cards, direct debit, and retail outlets through Payment Requests and Payment Tokens; complementary APIs cover hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds.
+Xendit is a payments infrastructure provider for Southeast Asia, giving businesses in Indonesia, the Philippines, and the wider region a single REST API to accept payments, disburse funds, and manage money movement. The unified Payments API accepts virtual accounts, e-wallets (OVO, DANA, GoPay, ShopeePay, GCash, GrabPay, Maya), QR (QRIS / QR Ph), cards, direct debit, and retail outlets through Payment Requests and Payment Tokens; complementary APIs cover hosted Invoices, Payouts / disbursements, Balance, Transactions, Customers, and Refunds. All requests are authenticated with a secret API key over HTTP Basic against the base host https://api.xendit.co.
 
-## Access Model
+**Areas:** Payments · Fintech · Payment Gateway · Southeast Asia · Indonesia · Philippines · Disbursements · Digital Wallet · Virtual Accounts · Cards · Financial Infrastructure
 
-Access is **self-serve**. Register for a Xendit dashboard account and you immediately get **test-mode** secret API keys to simulate payments; **live-mode** keys unlock after business verification and move real money. There is no waitlist or partner-gate for basic API access.
+## Xendit on APIs.io
 
-- **Base URL:** `https://api.xendit.co`
-- **Authentication:** HTTP Basic — your secret API key is the **username**, the password is left **empty** (the client Base64-encodes `SECRET_KEY:`). See [authentication/xendit-authentication.yml](authentication/xendit-authentication.yml).
-- **Versioning:** the v3 Payments API (`/v3/payment_requests`, `/v3/payment_tokens`) requires an `api-version` header (`2024-11-11`); Customers accepts dates such as `2020-10-31`.
-- **Async model:** Xendit uses **outbound webhooks / callbacks** (HTTPS POST to a merchant-configured URL) for payment, refund, payout, session, report, and account events. There is **no public WebSocket API** — see [review.yml](review.yml).
+Everything profiled for Xendit is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/xendit/](https://apis.io/providers/xendit/)** — or go straight to one of the APIs or properties below.
 
-Pricing is usage-based (per transaction), not subscription tiers. Rates vary by country and channel; the [plans](plans/xendit-plans-pricing.yml) and [finops](finops/xendit-finops.yml) files carry representative Indonesia (IDR) and Philippines (PHP) figures and are marked `reconciled: false`.
+### APIs (8)
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/xendit/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/xendit/refs/heads/main/apis.yml)
+- [Xendit Balance API](https://apis.io/apis/xendit/xendit-balance-api/) — Retrieve account balances by type and currency.
+- [Xendit Customers API](https://apis.io/apis/xendit/xendit-customers-api/) — Create and manage customer records.
+- [Xendit Invoices API](https://apis.io/apis/xendit/xendit-invoices-api/) — Xendit-hosted invoices / payment links.
+- [Xendit Payment Requests API](https://apis.io/apis/xendit/xendit-payment-requests-api/) — Unified Payments API - charge end users across all channels.
+- [Xendit Payment Tokens API](https://apis.io/apis/xendit/xendit-payment-tokens-api/) — Save reusable payment methods for future and recurring charges.
+- [Xendit Payouts API](https://apis.io/apis/xendit/xendit-payouts-api/) — Disburse funds to bank accounts and e-wallets.
+- [Xendit Refunds API](https://apis.io/apis/xendit/xendit-refunds-api/) — Refund successful payment requests.
+- [Xendit Transactions API](https://apis.io/apis/xendit/xendit-transactions-api/) — List and retrieve money-movement transactions.
 
-## Tags
+### Published properties
 
-- Payments
-- Fintech
-- Payment Gateway
-- Southeast Asia
-- Indonesia
-- Philippines
-- Disbursements
-- E-Wallet
-- Virtual Accounts
-- Cards
-- Financial Infrastructure
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Timestamps
+#### Agentic access (1)
 
-- **Created:** 2026-07-12
-- **Modified:** 2026-07-12
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## APIs
+- [Xendit Agentic Access](https://apis.io/agentic-access/xendit/xendit-agentic-access/)
 
-### Xendit Payment Requests API
+#### Collections (9)
 
-The unified Payments API surface. Create, retrieve, and cancel payment requests that charge end users across every Xendit channel — virtual accounts, e-wallets, QR (QRIS / QR Ph), cards, direct debit, and retail outlets. Requires the `api-version` header (2024-11-11).
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://docs.xendit.co/apidocs/create-payment-request](https://docs.xendit.co/apidocs/create-payment-request)
-- **Base URL:** `https://api.xendit.co`
+- [Xendit API](https://apis.io/collections/xendit/open-xendit/)
+- [Xendit Balance API](https://apis.io/collections/xendit/open-xendit-balance-api/)
+- [Xendit Balance Customers API](https://apis.io/collections/xendit/open-xendit-customers-api/)
+- [Xendit Balance Invoices API](https://apis.io/collections/xendit/open-xendit-invoices-api/)
+- [Xendit Balance Payment Requests API](https://apis.io/collections/xendit/open-xendit-payment-requests-api/)
+- [Xendit Balance Payment Tokens API](https://apis.io/collections/xendit/open-xendit-payment-tokens-api/)
+- [Xendit Balance Payouts API](https://apis.io/collections/xendit/open-xendit-payouts-api/)
+- [Xendit Balance Refunds API](https://apis.io/collections/xendit/open-xendit-refunds-api/)
+- [Xendit Balance Transactions API](https://apis.io/collections/xendit/open-xendit-transactions-api/)
 
-#### Tags
+#### Security (2)
 
-- Payments
-- Payment Requests
-- Virtual Accounts
-- E-Wallet
-- Cards
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Xendit Authentication](https://apis.io/security/xendit/xendit-authentication/)
+- [Xendit Domain Security](https://apis.io/security/xendit/xendit-domain-security/)
 
-- [Documentation](https://docs.xendit.co/apidocs/introduction)
-- [API Reference](https://docs.xendit.co/apidocs/create-payment-request)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Plans and pricing (1)
 
-### Xendit Payment Tokens API
+Published plans, tiers and prices.
 
-Save an end user's payment method as a reusable payment token for future and recurring transactions, then reference it from a payment request. Part of the v3 Payments API and gated by the `api-version` header (2024-11-11).
+- [Xendit Plans Pricing](https://apis.io/plans/xendit/xendit-plans-pricing/)
 
-- **Human URL:** [https://docs.xendit.co/apidocs/create-payment-token](https://docs.xendit.co/apidocs/create-payment-token)
-- **Base URL:** `https://api.xendit.co`
+#### Rate limits (1)
 
-#### Tags
+Published request limits.
 
-- Payment Methods
-- Tokens
-- Recurring
+- [Xendit Rate Limits](https://apis.io/rate-limits/xendit/xendit-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [API Reference](https://docs.xendit.co/apidocs/create-payment-token)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+What the API costs to run, by operation.
 
-### Xendit Invoices API
+- [Xendit Finops](https://apis.io/finops/xendit/xendit-finops/)
 
-Create Xendit-hosted invoices / payment links that present every enabled payment channel on a single checkout page. Create an invoice, retrieve it, list invoices, and expire an outstanding invoice.
+## Where to find this API
 
-- **Human URL:** [https://docs.xendit.co/apidocs/payment-link](https://docs.xendit.co/apidocs/payment-link)
-- **Base URL:** `https://api.xendit.co`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Tags
-
-- Invoices
-- Payment Links
-- Checkout
-
-#### Properties
-
-- [Documentation](https://docs.xendit.co/apidocs/payment-link)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Xendit Payouts API
-
-Disburse funds to bank accounts and e-wallets across the region. Create a payout, retrieve it by ID, and cancel a pending payout. The v3 Payouts API supersedes the legacy Disbursement product.
-
-- **Human URL:** [https://docs.xendit.co/apidocs/payouts-introduction](https://docs.xendit.co/apidocs/payouts-introduction)
-- **Base URL:** `https://api.xendit.co`
-
-#### Tags
-
-- Payouts
-- Disbursements
-- Transfers
-
-#### Properties
-
-- [Documentation](https://docs.xendit.co/apidocs/payouts-introduction)
-- [API Reference](https://docs.xendit.co/apidocs/create-payout-v3)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Xendit Balance API
-
-Retrieve your Xendit account balance for a given account type (CASH or HOLDING) and currency, optionally at a point in time. Supports the multi-currency balances Xendit holds across the region.
-
-- **Human URL:** [https://docs.xendit.co/apidocs/get-balance](https://docs.xendit.co/apidocs/get-balance)
-- **Base URL:** `https://api.xendit.co`
-
-#### Tags
-
-- Balance
-- Wallet
-
-#### Properties
-
-- [API Reference](https://docs.xendit.co/apidocs/get-balance)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Xendit Transactions API
-
-List the money-movement transactions on your account with rich filters (type, status, channel, currency, amount, created/updated date ranges) and cursor pagination, and retrieve a single transaction by ID.
-
-- **Human URL:** [https://docs.xendit.co/apidocs/list-transactions](https://docs.xendit.co/apidocs/list-transactions)
-- **Base URL:** `https://api.xendit.co`
-
-#### Tags
-
-- Transactions
-- Ledger
-- Reporting
-
-#### Properties
-
-- [API Reference](https://docs.xendit.co/apidocs/list-transactions)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Xendit Customers API
-
-Create and manage customer records — individual or business — that can be attached to payment requests, payment tokens, and payouts. Create a customer, list customers by reference, retrieve one, and update it.
-
-- **Human URL:** [https://docs.xendit.co/apidocs/create-customer-request](https://docs.xendit.co/apidocs/create-customer-request)
-- **Base URL:** `https://api.xendit.co`
-
-#### Tags
-
-- Customers
-- KYC
-
-#### Properties
-
-- [API Reference](https://docs.xendit.co/apidocs/create-customer-request)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Xendit Refunds API
-
-Initiate a full or partial refund against a successful payment request and retrieve refund status. Refund webhooks notify your systems as the refund settles.
-
-- **Human URL:** [https://docs.xendit.co/apidocs/refund-payment-request](https://docs.xendit.co/apidocs/refund-payment-request)
-- **Base URL:** `https://api.xendit.co`
-
-#### Tags
-
-- Refunds
-- Payments
-
-#### Properties
-
-- [API Reference](https://docs.xendit.co/apidocs/refund-payment-request)
-- [OpenAPI](openapi/xendit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/xendit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/xendit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Domain Security](security/xendit-domain-security.yml)
-- [Authentication](authentication/xendit-authentication.yml)
-- [GitHub Organization](https://github.com/xendit)
-- [LinkedIn](https://www.linkedin.com/company/xendit)
 - [Website](https://www.xendit.co)
 - [Documentation](https://docs.xendit.co)
-- [Plans](plans/xendit-plans-pricing.yml)
-- [Rate Limits](rate-limits/xendit-rate-limits.yml)
-- [Fin Ops](finops/xendit-finops.yml)
 - [Blog](https://www.xendit.co/en/blog/)
+- [GitHub](https://github.com/xendit)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 28.5** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 50.2 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 5.3 |
+
+**Agent readiness 26.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.7** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/xendit/](https://apis.io/providers/xendit/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Xendit: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/xendit/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
